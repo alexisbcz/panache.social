@@ -21,7 +21,6 @@ This project makes use of the following technology stack:
 - [NextJS](http://nextjs.com)
 - [TailwindCSS](https://tailwindcss.com)
 - [ShadCN UI](https://ui.shadcn.com)
-- [Prisma](https://www.prisma.io)
 - [PostgreSQL](https://www.postgresql.org)
 
 ### Installation

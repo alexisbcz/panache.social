@@ -42,7 +42,7 @@ export default function Submit() {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="My cat just did something that will make you question reality..."
+            placeholder="TIFU by showing my cat a mirror and now he's having an existential crisis"
             required
           />
         </div>
@@ -54,7 +54,7 @@ export default function Submit() {
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Dear diary, today I learned that if you microwave a grape, it turns into plasma. Also, my cat is plotting world domination. Please send help."
+              placeholder="So there I was, minding my own business, when I decided to show my cat his reflection in a mirror. Little did I know, I was about to witness a full-blown existential crisis. He's been staring at his reflection for 3 hours now, occasionally looking at his paws and back at the mirror. I think he's questioning the very fabric of reality. AITA for making my cat question his entire existence?"
               className="min-h-[200px]"
               required
             />
@@ -69,7 +69,7 @@ export default function Submit() {
               id="link"
               value={link}
               onChange={(e) => setLink(e.target.value)}
-              placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ (I promise it's not a rickroll... or is it?)"
+              placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ (I swear it's not a rickroll... unless?)"
               required
             />
           </div>
