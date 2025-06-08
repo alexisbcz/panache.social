@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { SidebarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
+import { SidebarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export function ToggleSidebarButton() {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar } = useSidebar();
 
   return (
     <Button
@@ -16,5 +16,5 @@ export function ToggleSidebarButton() {
     >
       <SidebarIcon />
     </Button>
-  )
-} 
+  );
+}

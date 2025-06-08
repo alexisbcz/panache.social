@@ -23,7 +23,8 @@ const pirataOne = Pirata_One({
 
 export const metadata: Metadata = {
   title: "Panache",
-  description: "An open-source alternative to Reddit. Powered by the community.",
+  description:
+    "An open-source alternative to Reddit. Powered by the community.",
 };
 
 export default function RootLayout({
@@ -40,11 +41,7 @@ export default function RootLayout({
           <SiteHeader />
           <div className="flex flex-1">
             <AppSidebar />
-            <SidebarInset>
-              <div className="flex flex-1 flex-col gap-4 p-4">
-                {children}
-              </div>
-            </SidebarInset>
+            <SidebarInset>{children}</SidebarInset>
           </div>
         </SidebarProvider>
       </body>

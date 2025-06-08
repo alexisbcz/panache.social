@@ -17,6 +17,7 @@ No images. No videos.
 ### Technology Stack
 
 This project makes use of the following technology stack:
+
 - [NextJS](http://nextjs.com)
 - [TailwindCSS](https://tailwindcss.com)
 - [ShadCN UI](https://ui.shadcn.com)
