@@ -1,7 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Heart, MessageSquare, Share2, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 import {
@@ -37,7 +42,7 @@ export const PostCard = ({
   const { toast } = useToast();
 
   const handleLike = () => {
-    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
     setIsLiked(!isLiked);
     toast({
       title: isLiked ? "Unliked" : "Liked!",
@@ -52,7 +57,7 @@ export const PostCard = ({
         title: "Link copied!",
         description: "Post link has been copied to your clipboard.",
       });
-    } catch (err) {
+    } catch {
       toast({
         title: "Failed to copy",
         description: "Couldn't copy the link to clipboard.",
@@ -65,15 +70,17 @@ export const PostCard = ({
     <Card className="!gap-4">
       <CardHeader className="flex flex-row sm:items-center gap-2">
         <div className="flex flex-col items-center">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className={`sm:!-mt-2 h-8 w-8 transition-all duration-200 ${isLiked ? 'text-rose-500 scale-110' : 'text-muted-foreground hover:text-rose-500 hover:bg-rose-50'}`}
+          <Button
+            variant="ghost"
+            size="icon"
+            className={`sm:!-mt-2 h-8 w-8 transition-all duration-200 ${isLiked ? "text-rose-500 scale-110" : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50"}`}
             onClick={handleLike}
           >
-            <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+            <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
           </Button>
-          <span className="text-xs text-muted-foreground font-medium">{likes}</span>
+          <span className="text-xs text-muted-foreground font-medium">
+            {likes}
+          </span>
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -84,7 +91,10 @@ export const PostCard = ({
             <span>•</span>
             <span>{postedAt}</span>
           </div>
-          <Link href={`/posts/123`} className="text-lg font-medium hover:underline">
+          <Link
+            href={`/posts/123`}
+            className="text-lg font-medium hover:underline"
+          >
             {title}
           </Link>
         </div>
@@ -107,7 +117,10 @@ export const PostCard = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={copyToClipboard} className="gap-2 text-xs">
+            <DropdownMenuItem
+              onClick={copyToClipboard}
+              className="gap-2 text-xs"
+            >
               <LinkIcon className="h-4 w-4" />
               <span>Copy Link</span>
             </DropdownMenuItem>
@@ -116,4 +129,4 @@ export const PostCard = ({
       </CardFooter>
     </Card>
   );
-} 
+};

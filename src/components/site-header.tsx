@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "./ui/button";
 import { NavUser } from "./nav-user";
 import { PlusIcon } from "lucide-react";
 
-export function SiteHeader() {
+export function SiteHeader({ isAuthPage = false }: { isAuthPage?: boolean }) {
   return (
     <header className="px-4 py-3 sm:py-0 bg-background sticky top-0 z-50 flex flex-wrap w-full items-center border-b sm:h-(--header-height) justify-between gap-2">
       <div className="flex-1 flex items-center gap-2">
@@ -13,9 +13,11 @@ export function SiteHeader() {
         <span className="font-pirata text-3xl">Panache</span>
       </div>
 
-      <div className="flex-1 flex justify-center">
-        <SearchForm />
-      </div>
+      {!isAuthPage && (
+        <div className="flex-1 flex justify-center">
+          <SearchForm />
+        </div>
+      )}
 
       <div className="flex-1 flex justify-end items-center gap-2">
         <Link href="/submit">
@@ -31,10 +33,13 @@ export function SiteHeader() {
             avatar: "https://github.com/shadcn.png",
           }}
         />
-        <Link className={buttonVariants({ variant: "outline" })} href="/login">
+        <Link className={buttonVariants({ variant: "outline" })} href="/log-in">
           <span>Log In</span>
         </Link>
-        <Link className={buttonVariants({ variant: "default" })} href="/signup">
+        <Link
+          className={buttonVariants({ variant: "default" })}
+          href="/sign-up"
+        >
           <span>Sign Up</span>
         </Link>
       </div>
