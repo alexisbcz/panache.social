@@ -1,48 +1,63 @@
+"use client";
 import { SearchForm } from "@/components/search-form";
 import { ToggleSidebarButton } from "./toggle-sidebar-button";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { NavUser } from "./nav-user";
 import { PlusIcon } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { se } from "date-fns/locale";
 
 export function SiteHeader({ isAuthPage = false }: { isAuthPage?: boolean }) {
+  const session = authClient.useSession();
   return (
     <header className="px-4 py-3 sm:py-0 bg-background sticky top-0 z-50 flex flex-wrap w-full items-center border-b sm:h-(--header-height) justify-between gap-2">
       <div className="flex-1 flex items-center gap-2">
         <ToggleSidebarButton />
         <span className="font-pirata text-3xl">Panache</span>
       </div>
-
       {!isAuthPage && (
         <div className="flex-1 flex justify-center">
           <SearchForm />
         </div>
       )}
-
-      <div className="flex-1 flex justify-end items-center gap-2">
-        <Link href="/submit">
-          <Button variant="ghost">
-            <PlusIcon className="size-4" />
-            <span>Submit</span>
-          </Button>
-        </Link>
-        <NavUser
-          user={{
-            name: "John Doe",
-            email: "john.doe@example.com",
-            avatar: "https://github.com/shadcn.png",
-          }}
-        />
-        <Link className={buttonVariants({ variant: "outline" })} href="/log-in">
-          <span>Log In</span>
-        </Link>
-        <Link
-          className={buttonVariants({ variant: "default" })}
-          href="/sign-up"
-        >
-          <span>Sign Up</span>
-        </Link>
-      </div>
+      <ActionsMenu />
     </header>
   );
+}
+
+function ActionsMenu() {
+  const session = authClient.useSession();
+  if (session.isPending) {
+    return null;
+  }
+
+  if (session.data?.user) {
+    return (
+      <div className="flex-1 flex justify-end items-center gap-2">
+        <Link className={buttonVariants({ variant: "ghost" })} href="/submit">
+          <PlusIcon className="size-4" />
+          <span>Submit</span>
+        </Link>
+    <NavUser user={{
+      name: session.data.user.name,
+      avatar: session.data.user.image || "",
+    }} />
+    </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 flex justify-end items-center gap-2">
+      <Link className={buttonVariants({ variant: "outline" })} href="/log-in">
+        <span>Log In</span>
+      </Link>
+      <Link
+        className={buttonVariants({ variant: "default" })}
+        href="/sign-up"
+      >
+        <span>Sign Up</span>
+      </Link>
+    </div>
+  )
 }

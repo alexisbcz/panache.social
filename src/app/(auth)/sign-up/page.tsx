@@ -46,6 +46,10 @@ export default function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log("Submitting with values:", {
+        ...values,
+        password: "[REDACTED]",
+      });
       const { error } = await authClient.signUp.email({
         email: values.email,
         name: values.username,
@@ -53,6 +57,7 @@ export default function SignUpPage() {
       });
 
       if (error) {
+        console.error("Sign up error:", error);
         toast({
           title: "Error",
           description: error.message,
@@ -68,7 +73,7 @@ export default function SignUpPage() {
 
       router.push("/log-in");
     } catch (error) {
-      console.error(error);
+      console.error("Unexpected error:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
