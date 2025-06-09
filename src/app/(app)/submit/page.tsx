@@ -5,22 +5,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { submitPost } from "./actions";
 import { useState } from "react";
 
 export default function Submit() {
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [link, setLink] = useState("");
+  const [text, setText] = useState("");
+  const [url, setUrl] = useState("");
   const [activeTab, setActiveTab] = useState("text");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add form submission logic
-    console.log({
-      title,
-      content: activeTab === "text" ? content : link,
-      type: activeTab,
-    });
+    setIsSubmitting(true);
+
+    try {
+      await submitPost({
+        title,
+        text: activeTab === "text" ? text : undefined,
+        url: activeTab === "link" ? url : undefined,
+      });
+    } catch (error) {
+      console.error("Error submitting post:", error);
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to submit post",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -49,35 +66,37 @@ export default function Submit() {
 
         <TabsContent value="text" className="mt-4">
           <div className="grid items-center gap-1.5">
-            <Label htmlFor="content">Content</Label>
+            <Label htmlFor="text">Content</Label>
             <Textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
+              id="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
               placeholder="Can you believe it? I'll have a hard time processing this information."
               className="min-h-[100px]"
-              required
+              required={activeTab === "text"}
             />
           </div>
         </TabsContent>
 
         <TabsContent value="link" className="mt-4">
           <div className="grid items-center gap-1.5">
-            <Label htmlFor="link">Link</Label>
+            <Label htmlFor="url">Link</Label>
             <Input
               type="url"
-              id="link"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
+              id="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
               placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ"
-              required
+              required={activeTab === "link"}
             />
           </div>
         </TabsContent>
       </Tabs>
 
       <div className="flex">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
       </div>
     </form>
   );

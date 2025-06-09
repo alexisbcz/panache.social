@@ -71,7 +71,7 @@ export default function SignUpPage() {
         description: "Account created successfully!",
       });
 
-      router.push("/log-in");
+      router.push("/");
     } catch (error) {
       console.error("Unexpected error:", error);
       toast({
