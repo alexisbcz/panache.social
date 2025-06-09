@@ -1,16 +1,14 @@
-"use client";
-import { SearchForm } from "@/components/search-form";
 import { ToggleSidebarButton } from "./toggle-sidebar-button";
 import { ActionsMenu } from "./actions-menu";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-export function SiteHeader({ isAuthPage = false }: { isAuthPage?: boolean }) {
+export function SiteHeader() {
   return (
     <header className="px-4 py-3 sm:py-0 bg-background sticky top-0 z-50 flex flex-wrap w-full items-center border-b sm:h-(--header-height) justify-between gap-2">
       <div className="flex-1 flex items-center gap-2">
         <ToggleSidebarButton />
-        <Tooltip >
+        <Tooltip>
           <TooltipTrigger>
             <Link href="/" className="font-pirata text-3xl">
               Panache
@@ -21,11 +19,7 @@ export function SiteHeader({ isAuthPage = false }: { isAuthPage?: boolean }) {
           </TooltipContent>
         </Tooltip>
       </div>
-      {!isAuthPage && (
-        <div className="flex-1 flex justify-center">
-          <SearchForm />
-        </div>
-      )}
+
       <ActionsMenu />
     </header>
   );

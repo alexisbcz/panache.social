@@ -10,7 +10,7 @@ export default function AuthLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen min-w-screen flex-col">
-        <SiteHeader isAuthPage />
+        <SiteHeader />
         {children}
         <Toaster />
       </div>

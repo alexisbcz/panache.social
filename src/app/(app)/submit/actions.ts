@@ -3,7 +3,6 @@
 import { db } from "@/db";
 import { posts } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { authClient } from "@/lib/auth-client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

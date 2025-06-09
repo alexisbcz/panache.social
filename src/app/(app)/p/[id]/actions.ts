@@ -1,8 +1,7 @@
 "use server";
 
 import { posts, users, comments } from "@/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { desc, eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -114,4 +113,42 @@ export async function addComment(postId: string, content: string) {
   });
 
   revalidatePath(`/p/${postId}`);
+}
+
+export async function deletePost(postId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    throw new Error("You must be logged in to delete a post");
+  }
+
+  // Get the post to check ownership
+  const post = await db
+    .select({
+      authorId: posts.authorId,
+    })
+    .from(posts)
+    .where(eq(posts.id, postId))
+    .limit(1);
+
+  if (!post.length) {
+    throw new Error("Post not found");
+  }
+
+  // Check if the user is the author of the post
+  if (post[0].authorId !== session.user.id) {
+    throw new Error("You can only delete your own posts");
+  }
+
+  // Delete the post
+  await db.delete(posts).where(eq(posts.id, postId));
+
+  // Revalidate the home page and post page
+  revalidatePath("/");
+  revalidatePath(`/p/${postId}`);
+
+  // Redirect to home page
+  redirect("/");
 }

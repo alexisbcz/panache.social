@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import { SelectGroup } from "@radix-ui/react-select";
 import { PostCard } from "@/components/post-card";
 import { getPosts, type Post } from "./actions";
-import { formatDistanceToNow } from "date-fns";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("top");
@@ -41,7 +40,7 @@ export default function Home() {
   }, [activeTab, timeFrame]);
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4 p-4 max-w-5xl">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex items-center gap-4">
           <TabsList>
@@ -76,19 +75,7 @@ export default function Home() {
               <div className="text-center py-8">No posts found</div>
             ) : (
               posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  id={post.id}
-                  title={post.title}
-                  content={post.text || ""}
-                  url={post.url || undefined}
-                  author={post.author.username}
-                  likes={post.likesCount}
-                  comments={post.commentsCount}
-                  postedAt={formatDistanceToNow(post.createdAt, {
-                    addSuffix: true,
-                  })}
-                />
+                <PostCard key={post.id} post={post} truncate />
               ))
             )}
           </div>
@@ -102,19 +89,7 @@ export default function Home() {
               <div className="text-center py-8">No posts found</div>
             ) : (
               posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  id={post.id}
-                  title={post.title}
-                  content={post.text || ""}
-                  url={post.url || undefined}
-                  author={post.author.username}
-                  likes={post.likesCount}
-                  comments={post.commentsCount}
-                  postedAt={formatDistanceToNow(post.createdAt, {
-                    addSuffix: true,
-                  })}
-                />
+                <PostCard key={post.id} post={post} truncate />
               ))
             )}
           </div>

@@ -46,10 +46,6 @@ export default function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log("Submitting with values:", {
-        ...values,
-        password: "[REDACTED]",
-      });
       const { error } = await authClient.signUp.email({
         email: values.email,
         name: values.username,

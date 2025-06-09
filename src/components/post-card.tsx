@@ -7,48 +7,43 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import {
-  Heart,
-  MessageSquare,
-  Share2,
-  Link as LinkIcon,
-  FileText,
-} from "lucide-react";
+import { Heart, MessageSquare, Link as LinkIcon, FileText } from "lucide-react";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { authClient } from "@/lib/auth-client";
+import { deletePost } from "@/app/(app)/p/[id]/actions";
+import { useRouter } from "next/navigation";
+import { PostActionsDropdown } from "./post-actions-dropdown";
+import { cn } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
 
-interface PostCardProps {
+interface Post {
   id: string;
   title: string;
-  content?: string;
-  url?: string;
-  author: string;
-  likes: number;
-  comments: number;
-  postedAt: string;
+  text?: string | null;
+  url?: string | null;
+  author: {
+    username: string;
+  };
+  likesCount: number;
+  commentsCount: number;
+  createdAt: Date;
 }
 
-export const PostCard = ({
-  id,
-  title,
-  content,
-  url,
-  author,
-  likes: initialLikes,
-  comments,
-  postedAt,
-}: PostCardProps) => {
-  const [likes, setLikes] = useState(initialLikes);
+interface PostCardProps {
+  post: Post;
+  truncate?: boolean;
+}
+
+export const PostCard = ({ post, truncate = false }: PostCardProps) => {
+  const [likes, setLikes] = useState(post.likesCount);
   const [isLiked, setIsLiked] = useState(false);
-  const postUrl = `https://panache.social/p/${id}`;
+  const postUrl = `https://panache.social/p/${post.id}`;
+  const session = authClient.useSession();
+  const isOwner = session.data?.user?.name === post.author.username;
+  const router = useRouter();
 
   const { toast } = useToast();
 
@@ -62,6 +57,7 @@ export const PostCard = ({
         description: isLiked ? "Post unliked" : "Post liked successfully",
       });
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to update like status",
@@ -70,17 +66,20 @@ export const PostCard = ({
     }
   };
 
-  const copyToClipboard = async () => {
+  const handleDelete = async () => {
     try {
-      await navigator.clipboard.writeText(postUrl);
+      await deletePost(post.id);
       toast({
-        title: "Link copied!",
-        description: "Post link has been copied to your clipboard.",
+        title: "Post deleted",
+        description: "Your post has been deleted successfully.",
       });
-    } catch {
+      router.refresh();
+    } catch (error) {
+      console.error(error);
       toast({
-        title: "Failed to copy",
-        description: "Couldn't copy the link to clipboard.",
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to delete post",
         variant: "destructive",
       });
     }
@@ -104,21 +103,20 @@ export const PostCard = ({
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span>Posted by</span>
-            <Link href={`/u/${author}`} className="hover:underline">
-              u/{author}
-            </Link>
+            <span>Posted by {post.author.username}</span>
             <span>•</span>
-            <span>{postedAt}</span>
+            <span>
+              {formatDistanceToNow(post.createdAt, { addSuffix: true })}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href={`/p/${id}`}
+              href={`/p/${post.id}`}
               className="text-lg font-medium hover:underline"
             >
-              {title}
+              {post.title}
             </Link>
-            {url ? (
+            {post.url ? (
               <Badge
                 variant="secondary"
                 className="gap-1 bg-sky-50 text-sky-600"
@@ -126,7 +124,7 @@ export const PostCard = ({
                 <LinkIcon className="h-3 w-3" />
                 <span>Link</span>
               </Badge>
-            ) : content ? (
+            ) : post.text ? (
               <Badge
                 variant="secondary"
                 className="gap-1 bg-violet-50 text-violet-600"
@@ -138,47 +136,43 @@ export const PostCard = ({
           </div>
         </div>
       </CardHeader>
-      {content && (
+      {post.text && (
         <CardContent>
-          <p className="text-sm text-muted-foreground">{content}</p>
+          <p
+            className={cn(
+              "text-sm text-muted-foreground",
+              truncate ? "line-clamp-3" : "whitespace-pre-wrap",
+            )}
+          >
+            {post.text}
+          </p>
         </CardContent>
       )}
-      {url && (
+      {post.url && (
         <CardContent>
           <a
-            href={url}
+            href={post.url}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
           >
-            <span>{url}</span>
+            <span className="line-clamp-1 truncate break-all">{post.url}</span>
           </a>
         </CardContent>
       )}
       <CardFooter className="flex gap-2">
         <Button variant="ghost" size="sm" className="gap-1" asChild>
-          <Link href={`/p/${id}`}>
+          <Link href={`/p/${post.id}#comments`}>
             <MessageSquare className="h-4 w-4" />
-            <span>{comments} Comments</span>
+            <span>{post.commentsCount} Comments</span>
           </Link>
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-1">
-              <Share2 className="h-4 w-4" />
-              <span>Share</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={copyToClipboard}
-              className="gap-2 text-xs"
-            >
-              <LinkIcon className="h-4 w-4" />
-              <span>Copy Link</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <PostActionsDropdown
+          postId={post.id}
+          postUrl={postUrl}
+          isOwner={isOwner}
+          onDelete={handleDelete}
+        />
       </CardFooter>
     </Card>
   );

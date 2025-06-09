@@ -32,7 +32,7 @@ export async function getPosts({
   let timeFilter = sql`1=1`; // Default to no time filter
   if (timeFrame !== "all") {
     const now = new Date();
-    let startDate = new Date();
+    const startDate = new Date();
 
     switch (timeFrame) {
       case "today":

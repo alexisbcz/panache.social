@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { addComment } from "./actions";
+import { Label } from "@/components/ui/label";
 
 interface CommentFormProps {
   postId: string;
@@ -42,13 +43,17 @@ export function CommentForm({ postId }: CommentFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <Textarea
-        placeholder="What are your thoughts?"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        className="min-h-[100px]"
-      />
-      <div className="flex justify-end">
+      <div className="flex flex-col space-y-2">
+        <Label htmlFor="comment">New comment</Label>
+        <Textarea
+          placeholder="What are your thoughts?"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="min-h-[100px]"
+          id="comment"
+        />
+      </div>
+      <div className="flex">
         <Button type="submit" disabled={isSubmitting || !content.trim()}>
           {isSubmitting ? "Posting..." : "Post Comment"}
         </Button>

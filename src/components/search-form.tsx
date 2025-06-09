@@ -7,7 +7,7 @@ export function SearchForm() {
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         type="search"
-        placeholder="Search posts, communities, users..."
+        placeholder="Search posts..."
         className="w-full pl-8 bg-muted/50"
       />
     </form>

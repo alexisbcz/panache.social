@@ -14,7 +14,7 @@ export default function AppLayout({
       <div className="flex flex-1">
         <AppSidebar />
         <SidebarInset>{children}</SidebarInset>
-        <Toaster />{" "}
+        <Toaster />
       </div>
     </SidebarProvider>
   );
