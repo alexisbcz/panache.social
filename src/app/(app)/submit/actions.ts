@@ -13,7 +13,7 @@ export async function submitPost(formData: {
   url?: string;
 }) {
   const session = await auth.api.getSession({
-    headers: await headers(), // you need to pass the headers object.
+    headers: await headers(),
   });
 
   // Check if session exists and has user data

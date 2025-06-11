@@ -20,7 +20,7 @@ export function CommentForm({ postId }: CommentFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!session.data?.user) {
       toast({
         title: "Error",

@@ -23,8 +23,15 @@ export const metadata: Metadata = {
     default: "Panache.social",
     template: "%s | Panache.social",
   },
-  description: "An open-source alternative to Reddit. Powered by the community.",
-  keywords: ["social media", "reddit alternative", "open source", "community", "discussion"],
+  description:
+    "An open-source alternative to Reddit. Powered by the community.",
+  keywords: [
+    "social media",
+    "reddit alternative",
+    "open source",
+    "community",
+    "discussion",
+  ],
   authors: [{ name: "Alexis Bouchez" }],
   creator: "Alexis Bouchez",
   publisher: "Panache.social",
@@ -39,13 +46,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://panache.social",
     title: "Panache.social",
-    description: "An open-source alternative to Reddit. Powered by the community.",
+    description:
+      "An open-source alternative to Reddit. Powered by the community.",
     siteName: "Panache.social",
   },
   twitter: {
     card: "summary_large_image",
     title: "Panache.social",
-    description: "An open-source alternative to Reddit. Powered by the community.",
+    description:
+      "An open-source alternative to Reddit. Powered by the community.",
     creator: "@alexisbchz",
   },
   robots: {

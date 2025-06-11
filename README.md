@@ -2,6 +2,10 @@
 
 > An open-source alternative to Reddit. Powered by the community.
 
+[![Discord](https://img.shields.io/discord/1234567890?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/eMUC7ejHja)
+[![GitHub Stars](https://img.shields.io/github/stars/alexisbcz/panache.social?style=social)](https://github.com/alexisbcz/panache.social/stargazers)
+[![License](https://img.shields.io/github/license/alexisbcz/panache.social)](https://github.com/alexisbcz/panache.social/blob/main/LICENSE)
+
 ## Technology Stack
 
 - **Frontend Framework**: [Next.js](http://nextjs.com) 15.3.3

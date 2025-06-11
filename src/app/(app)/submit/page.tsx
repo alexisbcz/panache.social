@@ -5,12 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 import { submitPost } from "./actions";
 import { useState } from "react";
 
 export default function Submit() {
-  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
@@ -21,23 +19,13 @@ export default function Submit() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      await submitPost({
-        title,
-        text: activeTab === "text" ? text : undefined,
-        url: activeTab === "link" ? url : undefined,
-      });
-    } catch (error) {
-      console.error("Error submitting post:", error);
-      toast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to submit post",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    await submitPost({
+      title,
+      text: activeTab === "text" ? text : undefined,
+      url: activeTab === "link" ? url : undefined,
+    });
+
+    setIsSubmitting(false);
   };
 
   return (
