@@ -12,9 +12,34 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CommentCard } from "@/components/comment-card";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+}
+
+// Generate metadata for the page
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const post = await getPost(id);
+
+  return {
+    title: post.title,
+    description: post.text?.slice(0, 160) || "Check out this post on Panache.social",
+    openGraph: {
+      title: post.title,
+      description: post.text?.slice(0, 160) || "Check out this post on Panache.social",
+      type: "article",
+      url: `https://panache.social/p/${id}`,
+      images: post.url ? [{ url: post.url }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.text?.slice(0, 160) || "Check out this post on Panache.social",
+      images: post.url ? [post.url] : undefined,
+    },
+  };
 }
 
 export default async function PostPage({ params }: PageProps) {

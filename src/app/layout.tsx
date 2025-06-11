@@ -19,9 +19,52 @@ const pirataOne = Pirata_One({
 });
 
 export const metadata: Metadata = {
-  title: "Panache",
-  description:
-    "An open-source alternative to Reddit. Powered by the community.",
+  title: {
+    default: "Panache.social",
+    template: "%s | Panache.social",
+  },
+  description: "An open-source alternative to Reddit. Powered by the community.",
+  keywords: ["social media", "reddit alternative", "open source", "community", "discussion"],
+  authors: [{ name: "Alexis Bouchez" }],
+  creator: "Alexis Bouchez",
+  publisher: "Panache.social",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://panache.social"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://panache.social",
+    title: "Panache.social",
+    description: "An open-source alternative to Reddit. Powered by the community.",
+    siteName: "Panache.social",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Panache.social",
+    description: "An open-source alternative to Reddit. Powered by the community.",
+    creator: "@alexisbchz",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
