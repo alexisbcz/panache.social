@@ -1,10 +1,23 @@
-# panache.social
+<div align="center">
+  <h1>Panache.social</h1>
+  <p>An open-source alternative to Reddit.</p>
+  <div>
+    <a href="https://discord.gg/eMUC7ejHja">
+      <img src="https://img.shields.io/discord/1368204603753234432?color=5865F2&label=Discord&logo=discord&logoColor=white" alt="Discord">
+    </a>
+    <a href="https://github.com/alexisbcz/panache.social/stargazers">
+      <img src="https://img.shields.io/github/stars/alexisbcz/panache.social?style=social" alt="GitHub Stars">
+    </a>
+    <a href="https://github.com/alexisbcz/panache.social/blob/main/LICENSE">
+      <img src="https://img.shields.io/github/license/alexisbcz/panache.social" alt="License">
+    </a>
+  </div>
+</div>
 
-> An open-source alternative to Reddit. Powered by the community.
 
-[![Discord](https://img.shields.io/discord/1368204603753234432?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/eMUC7ejHja)
-[![GitHub Stars](https://img.shields.io/github/stars/alexisbcz/panache.social?style=social)](https://github.com/alexisbcz/panache.social/stargazers)
-[![License](https://img.shields.io/github/license/alexisbcz/panache.social)](https://github.com/alexisbcz/panache.social/blob/main/LICENSE)
+## What is Panache.social?
+
+Panache.social is an attempt to build an open-source alternative to HackerNews/Reddit. Our goal is to provide a friendly space to the open-source community.
 
 ## Technology Stack
 
