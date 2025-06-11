@@ -204,7 +204,6 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
         <SharePostDropdown postUrl={postUrl} />
         <PostActionsDropdown
           postId={post.id}
-          postUrl={postUrl}
           isOwner={isOwner}
           onDelete={handleDelete}
         />
