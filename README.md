@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Panache.social</h1>
+  <h1><a href="https://panache.social">Panache.social</a></h1>
   <p>An open-source alternative to Reddit.</p>
   <div>
     <a href="https://discord.gg/eMUC7ejHja">
@@ -14,10 +14,9 @@
   </div>
 </div>
 
-
 ## What is Panache.social?
 
-Panache.social is an attempt to build an open-source alternative to HackerNews/Reddit. Our goal is to provide a friendly space to the open-source community.
+Panache.social is an attempt to build an open-source alternative to HackerNews/Reddit. Our goal is to provide a friendly space to share links, text posts, and more.
 
 ## Technology Stack
 
@@ -113,7 +112,7 @@ Please ensure your code follows our coding standards and includes appropriate te
 
 ## License
 
-This project is licensed under the Mozilla Public License Version 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
