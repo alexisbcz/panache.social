@@ -6,9 +6,13 @@ import {
   integer,
   unique,
 } from "drizzle-orm/pg-core";
+import { createId } from "@paralleldrive/cuid2";
+
+// Custom type for CUID
+const cuid = text("id").$defaultFn(() => createId());
 
 export const users = pgTable("users", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   username: text("username").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified")
@@ -24,7 +28,7 @@ export const users = pgTable("users", {
 });
 
 export const sessions = pgTable("sessions", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
   createdAt: timestamp("created_at").notNull(),
@@ -37,7 +41,7 @@ export const sessions = pgTable("sessions", {
 });
 
 export const accounts = pgTable("accounts", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
   userId: text("user_id")
@@ -55,7 +59,7 @@ export const accounts = pgTable("accounts", {
 });
 
 export const verifications = pgTable("verifications", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
@@ -68,7 +72,7 @@ export const verifications = pgTable("verifications", {
 });
 
 export const posts = pgTable("posts", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   title: text("title").notNull(),
   text: text("text"),
   url: text("url"),
@@ -92,7 +96,7 @@ export const posts = pgTable("posts", {
 export const likes = pgTable(
   "likes",
   {
-    id: text("id").primaryKey(),
+    id: cuid.primaryKey(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
@@ -113,7 +117,7 @@ export const likes = pgTable(
 );
 
 export const comments = pgTable("comments", {
-  id: text("id").primaryKey(),
+  id: cuid.primaryKey(),
   content: text("content").notNull(),
   authorId: text("author_id")
     .notNull()
@@ -135,7 +139,7 @@ export const comments = pgTable("comments", {
 export const commentLikes = pgTable(
   "comment_likes",
   {
-    id: text("id").primaryKey(),
+    id: cuid.primaryKey(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),

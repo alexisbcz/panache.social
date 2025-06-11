@@ -32,7 +32,6 @@ export async function submitPost(formData: {
   const [post] = await db
     .insert(posts)
     .values({
-      id: crypto.randomUUID(),
       title,
       text: text || null,
       url: url || null,

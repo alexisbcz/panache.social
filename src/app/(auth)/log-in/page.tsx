@@ -34,6 +34,7 @@ export default function LogInPage() {
         email,
         password,
         callbackURL: "/",
+        rememberMe: true,
       });
 
       if (error) {
