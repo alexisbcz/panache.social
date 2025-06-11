@@ -1,5 +1,6 @@
 "use client";
 
+import { SharePostDropdown } from "./share-post-dropdown";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,10 +11,14 @@ import {
 import { Heart, MessageSquare, Link as LinkIcon, FileText } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { authClient } from "@/lib/auth-client";
-import { deletePost } from "@/app/(app)/p/[id]/actions";
+import {
+  deletePost,
+  toggleLike,
+  hasLikedPost,
+} from "@/app/(app)/p/[id]/actions";
 import { useRouter } from "next/navigation";
 import { PostActionsDropdown } from "./post-actions-dropdown";
 import { cn } from "@/lib/utils";
@@ -40,6 +45,7 @@ interface PostCardProps {
 export const PostCard = ({ post, truncate = false }: PostCardProps) => {
   const [likes, setLikes] = useState(post.likesCount);
   const [isLiked, setIsLiked] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
   const postUrl = `https://panache.social/p/${post.id}`;
   const session = authClient.useSession();
   const isOwner = session.data?.user?.name === post.author.username;
@@ -47,9 +53,30 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
 
   const { toast } = useToast();
 
+  // Initialize like state
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      if (session.data?.user) {
+        const liked = await hasLikedPost(post.id);
+        setIsLiked(liked);
+      }
+    };
+    checkLikeStatus();
+  }, [post.id, session.data?.user]);
+
   const handleLike = async () => {
+    if (!session.data?.user) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to like posts",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // TODO: Implement server-side like action
+      setIsLiking(true);
+      await toggleLike(post.id);
       setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
       setIsLiked(!isLiked);
       toast({
@@ -60,9 +87,14 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
       console.error(error);
       toast({
         title: "Error",
-        description: "Failed to update like status",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to update like status",
         variant: "destructive",
       });
+    } finally {
+      setIsLiking(false);
     }
   };
 
@@ -94,6 +126,7 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
             size="icon"
             className={`sm:!-mt-2 h-8 w-8 transition-all duration-200 ${isLiked ? "text-rose-500 scale-110" : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50"}`}
             onClick={handleLike}
+            disabled={isLiking}
           >
             <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
           </Button>
@@ -136,8 +169,8 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
           </div>
         </div>
       </CardHeader>
-      {post.text && (
-        <CardContent>
+      <CardContent>
+        {post.text && (
           <p
             className={cn(
               "text-sm text-muted-foreground",
@@ -146,27 +179,29 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
           >
             {post.text}
           </p>
-        </CardContent>
-      )}
-      {post.url && (
-        <CardContent>
+        )}
+        {post.url && (
           <a
             href={post.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
+            className="line-clamp-1 truncate break-all text-sm text-blue-500 hover:underline"
           >
-            <span className="line-clamp-1 truncate break-all">{post.url}</span>
+            {post.url}
           </a>
-        </CardContent>
-      )}
+        )}
+      </CardContent>
       <CardFooter className="flex gap-2">
         <Button variant="ghost" size="sm" className="gap-1" asChild>
           <Link href={`/p/${post.id}#comments`}>
             <MessageSquare className="h-4 w-4" />
-            <span>{post.commentsCount} Comments</span>
+            <span>
+              {post.commentsCount} Comment{post.commentsCount === 1 ? "" : "s"}
+            </span>
           </Link>
         </Button>
+
+        <SharePostDropdown postUrl={postUrl} />
         <PostActionsDropdown
           postId={post.id}
           postUrl={postUrl}

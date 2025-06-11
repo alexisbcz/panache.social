@@ -2,7 +2,11 @@
 import { ToggleSidebarButton } from "../../../components/toggle-sidebar-button";
 import { ActionsMenu } from "./actions-menu";
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../../components/ui/tooltip";
 
 export async function SiteHeader() {
   return (

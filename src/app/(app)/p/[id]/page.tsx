@@ -1,10 +1,6 @@
 import { getPost } from "./actions";
-import { formatDistanceToNow } from "date-fns";
 import { PostCard } from "@/components/post-card";
-import { Card, CardContent } from "@/components/ui/card";
-import { Heart } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { CommentForm } from "./comment-form";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -15,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { CommentCard } from "@/components/comment-card";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -49,33 +46,7 @@ export default async function PostPage({ params }: PageProps) {
         <CommentForm postId={post.id} />
         <div className="flex flex-col gap-4">
           {post.comments.map((comment) => (
-            <Card key={comment.id}>
-              <CardContent>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Link
-                      href={`/u/${comment.author.username}`}
-                      className="hover:underline"
-                    >
-                      u/{comment.author.username}
-                    </Link>
-                    <span>•</span>
-                    <span>
-                      {formatDistanceToNow(comment.createdAt, {
-                        addSuffix: true,
-                      })}
-                    </span>
-                  </div>
-                  <p className="text-sm">{comment.content}</p>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="gap-1">
-                      <Heart className="h-4 w-4" />
-                      <span>0</span>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <CommentCard key={comment.id} comment={comment} />
           ))}
         </div>
       </div>

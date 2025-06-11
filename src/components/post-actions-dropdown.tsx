@@ -14,7 +14,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { SharePostDropdown } from "./share-post-dropdown";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,13 +27,11 @@ import {
 
 interface PostActionsDropdownProps {
   postId: string;
-  postUrl: string;
   isOwner: boolean;
   onDelete: () => Promise<void>;
 }
 
 export function PostActionsDropdown({
-  postUrl,
   isOwner,
   onDelete,
 }: PostActionsDropdownProps) {
@@ -51,9 +48,12 @@ export function PostActionsDropdown({
     }
   };
 
+  if (!isOwner) {
+    return null;
+  }
+
   return (
     <>
-      <SharePostDropdown postUrl={postUrl} />
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenu>
@@ -63,17 +63,15 @@ export function PostActionsDropdown({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {isOwner && (
-                <DropdownMenuItem
-                  onClick={() => setShowDeleteDialog(true)}
-                  className="text-xs"
-                  disabled={isDeleting}
-                  variant="destructive"
-                >
-                  <Trash2 className="h-4 w-4 stroke-destructive" />
-                  <span>{isDeleting ? "Deleting..." : "Delete Post"}</span>
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem
+                onClick={() => setShowDeleteDialog(true)}
+                className="text-xs"
+                disabled={isDeleting}
+                variant="destructive"
+              >
+                <Trash2 className="h-4 w-4 stroke-destructive" />
+                <span>{isDeleting ? "Deleting..." : "Delete Post"}</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </TooltipTrigger>

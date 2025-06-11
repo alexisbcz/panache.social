@@ -154,3 +154,11 @@ export const commentLikes = pgTable(
     unique().on(table.userId, table.commentId),
   ],
 );
+
+export type Post = typeof posts.$inferSelect;
+export type PostWithAuthor = Post & { author: User };
+export type PostWithAuthorAndComments = PostWithAuthor & {
+  comments: Comment[];
+};
+export type Comment = typeof comments.$inferSelect & { author: User };
+export type User = typeof users.$inferSelect;

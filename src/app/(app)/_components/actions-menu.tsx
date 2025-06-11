@@ -1,3 +1,4 @@
+"use server";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";

@@ -54,9 +54,7 @@ export async function getPosts({
 
   // Build the order by clause
   const orderBy =
-    sort === "top"
-      ? desc(sql`${posts.likesCount} + ${posts.commentsCount}`)
-      : desc(posts.createdAt);
+    sort === "top" ? desc(posts.likesCount) : desc(posts.createdAt);
 
   // Fetch posts with author information
   const fetchedPosts = await db

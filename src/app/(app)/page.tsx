@@ -1,100 +1,27 @@
-"use client";
+import { getPosts } from "./actions";
+import { PostsView } from "./_components/posts-view";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useEffect, useState } from "react";
-import { SelectGroup } from "@radix-ui/react-select";
-import { PostCard } from "@/components/post-card";
-import { getPosts, type Post } from "./actions";
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ sort?: string; timeFrame?: string }>;
+}) {
+  const params = await searchParams;
+  const sort = params.sort || "top";
+  const timeFrame = params.timeFrame || "month";
 
-export default function Home() {
-  const [activeTab, setActiveTab] = useState("top");
-  const [timeFrame, setTimeFrame] = useState("month");
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      setIsLoading(true);
-      try {
-        const fetchedPosts = await getPosts({
-          sort: activeTab as "top" | "new",
-          timeFrame: timeFrame as "today" | "week" | "month" | "year" | "all",
-        });
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchPosts();
-  }, [activeTab, timeFrame]);
+  const posts = await getPosts({
+    sort: sort as "top" | "new",
+    timeFrame: timeFrame as "today" | "week" | "month" | "year" | "all",
+  });
 
   return (
     <div className="flex flex-col gap-4 p-4 max-w-5xl">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="flex items-center gap-4">
-          <TabsList>
-            <TabsTrigger value="top">Top</TabsTrigger>
-            <TabsTrigger value="new">New</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="top">
-            <Select value={timeFrame} onValueChange={setTimeFrame}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select time frame" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Time Frame</SelectLabel>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
-                  <SelectItem value="year">This Year</SelectItem>
-                  <SelectItem value="all">All Time</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </TabsContent>
-        </div>
-
-        <TabsContent value="new" className="mt-4">
-          <div className="flex flex-col gap-4">
-            {isLoading ? (
-              <div className="text-center py-8">Loading posts...</div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-8">No posts found</div>
-            ) : (
-              posts.map((post) => (
-                <PostCard key={post.id} post={post} truncate />
-              ))
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="top" className="mt-4">
-          <div className="flex flex-col gap-4">
-            {isLoading ? (
-              <div className="text-center py-8">Loading posts...</div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-8">No posts found</div>
-            ) : (
-              posts.map((post) => (
-                <PostCard key={post.id} post={post} truncate />
-              ))
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
+      <PostsView
+        initialPosts={posts}
+        initialSort={sort}
+        initialTimeFrame={timeFrame}
+      />
     </div>
   );
 }

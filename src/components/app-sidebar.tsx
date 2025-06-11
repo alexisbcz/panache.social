@@ -76,7 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span>Star on GitHub ⭐</span>
+                <span>Star on GitHub</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
