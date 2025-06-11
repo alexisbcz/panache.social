@@ -51,6 +51,9 @@ Before you begin, ensure you have the following installed:
    # Start the PostgreSQL database
    docker compose up -d
 
+   # Push the database schema
+   npx drizzle-kit push:pg
+
    # Start the development server
    npm run dev
    ```
@@ -71,7 +74,7 @@ Before you begin, ensure you have the following installed:
 
 Got a cool idea? Here's how to make it happen:
 
-1. **Join the Party**: First things first - hop into our [Discord server](https://discord.gg/panache-social). That's where all the magic happens.
+1. **Join the Party**: First things first - hop into our [Discord server](https://discord.gg/wSBgtv86tC). That's where all the magic happens.
 
 2. **Check the Issues**: Take a look at our [GitHub issues](https://github.com/alexisbcz/panache.social/issues) - maybe someone already suggested something similar. If not, create a new one!
 
