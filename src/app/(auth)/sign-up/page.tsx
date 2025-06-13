@@ -26,10 +26,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
+import { checkUsername } from "./actions";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-  username: z.string().min(2, "Username must be at least 2 characters"),
+  username: z
+    .string()
+    .min(2, "Username must be at least 2 characters")
+    .max(30, "Username must be at most 30 characters")
+    .regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -49,6 +54,19 @@ export default function SignUpPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+
+      // Check if username is already taken
+      const { isAvailable } = await checkUsername(values.username);
+
+      if (!isAvailable) {
+        toast({
+          title: "Error",
+          description: "This username is already taken. Please choose another one.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await authClient.signUp.email({
         email: values.email,
         name: values.username,

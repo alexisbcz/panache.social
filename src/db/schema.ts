@@ -13,7 +13,7 @@ const cuid = text("id").$defaultFn(() => createId());
 
 export const users = pgTable("users", {
   id: cuid.primaryKey(),
-  username: text("username").notNull(),
+  username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified")
     .$defaultFn(() => false)
