@@ -1,17 +1,20 @@
 "use client";
 
-import { ChevronsUpDown, CircleUserIcon, LogOut } from "lucide-react";
+import { ChevronsUpDown, CircleUserIcon, LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -60,13 +63,15 @@ export function NavUser({
         align="end"
         sideOffset={4}
       >
-        {/* <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Settings />
-            Settings
-          </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <Link href="/settings">
+            <DropdownMenuItem>
+              <Settings />
+              Settings
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator /> */}
+        <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={handleLogout}>
           <LogOut className="h-4 w-4" />
           <span>Log out</span>
