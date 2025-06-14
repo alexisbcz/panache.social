@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import { Community } from "@/db/schema";
 
 interface CommunitySelectorProps {
   name: string;
@@ -24,9 +25,7 @@ interface CommunitySelectorProps {
 export function CommunitySelector({ name, required }: CommunitySelectorProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [communities, setCommunities] = useState<
-    (typeof communities.$inferSelect)[]
-  >([]);
+  const [communities, setCommunities] = useState<Community[]>([]);
 
   // Load communities when the popover opens
   const loadCommunities = async () => {
