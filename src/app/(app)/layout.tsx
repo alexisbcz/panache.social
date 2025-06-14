@@ -13,7 +13,9 @@ export default async function AppLayout({
       <SiteHeader />
       <div className="flex flex-1">
         <AppSidebar />
-        <SidebarInset>{children}</SidebarInset>
+        <SidebarInset>
+          <div className="max-w-3xl px-6 py-4">{children}</div>
+        </SidebarInset>
         <Toaster />
       </div>
     </SidebarProvider>

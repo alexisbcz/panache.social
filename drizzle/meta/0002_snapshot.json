@@ -1,10 +1,6 @@
 {
-<<<<<<< HEAD
-  "id": "13763d34-ef81-47bd-b128-394f2542db7f",
-=======
-  "id": "dc6ac173-1a07-4522-bbb0-8ddf41bb4c00",
->>>>>>> 91c8cc5 (add support for communities)
-  "prevId": "93465835-9e0e-461f-a212-259e67d47043",
+  "id": "6ebec1ff-2de2-411d-80eb-f7f72977b9d0",
+  "prevId": "dc6ac173-1a07-4522-bbb0-8ddf41bb4c00",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -97,17 +93,8 @@
           "name": "accounts_user_id_users_id_fk",
           "tableFrom": "accounts",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -159,17 +146,8 @@
           "name": "comment_likes_user_id_users_id_fk",
           "tableFrom": "comment_likes",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -177,17 +155,8 @@
           "name": "comment_likes_comment_id_comments_id_fk",
           "tableFrom": "comment_likes",
           "tableTo": "comments",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "comment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["comment_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -197,14 +166,7 @@
         "comment_likes_user_id_comment_id_unique": {
           "name": "comment_likes_user_id_comment_id_unique",
           "nullsNotDistinct": false,
-<<<<<<< HEAD
-          "columns": [
-            "user_id",
-            "comment_id"
-          ]
-=======
           "columns": ["user_id", "comment_id"]
->>>>>>> 91c8cc5 (add support for communities)
         }
       },
       "policies": {},
@@ -264,17 +226,8 @@
           "name": "comments_author_id_users_id_fk",
           "tableFrom": "comments",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["author_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -282,17 +235,8 @@
           "name": "comments_post_id_posts_id_fk",
           "tableFrom": "comments",
           "tableTo": "posts",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "post_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["post_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -303,8 +247,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-<<<<<<< HEAD
-=======
     "public.communities": {
       "name": "communities",
       "schema": "",
@@ -360,7 +302,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
->>>>>>> 91c8cc5 (add support for communities)
     "public.likes": {
       "name": "likes",
       "schema": "",
@@ -402,17 +343,8 @@
           "name": "likes_user_id_users_id_fk",
           "tableFrom": "likes",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -420,17 +352,8 @@
           "name": "likes_post_id_posts_id_fk",
           "tableFrom": "likes",
           "tableTo": "posts",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "post_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["post_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -440,14 +363,7 @@
         "likes_user_id_post_id_unique": {
           "name": "likes_user_id_post_id_unique",
           "nullsNotDistinct": false,
-<<<<<<< HEAD
-          "columns": [
-            "user_id",
-            "post_id"
-          ]
-=======
           "columns": ["user_id", "post_id"]
->>>>>>> 91c8cc5 (add support for communities)
         }
       },
       "policies": {},
@@ -488,6 +404,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "community_id": {
+          "name": "community_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "likes_count": {
           "name": "likes_count",
           "type": "integer",
@@ -519,17 +441,17 @@
           "name": "posts_author_id_users_id_fk",
           "tableFrom": "posts",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["author_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "posts_community_id_communities_id_fk": {
+          "name": "posts_community_id_communities_id_fk",
+          "tableFrom": "posts",
+          "tableTo": "communities",
+          "columnsFrom": ["community_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -599,17 +521,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-<<<<<<< HEAD
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-=======
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
->>>>>>> 91c8cc5 (add support for communities)
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -619,13 +532,7 @@
         "sessions_token_unique": {
           "name": "sessions_token_unique",
           "nullsNotDistinct": false,
-<<<<<<< HEAD
-          "columns": [
-            "token"
-          ]
-=======
           "columns": ["token"]
->>>>>>> 91c8cc5 (add support for communities)
         }
       },
       "policies": {},
@@ -683,26 +590,10 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-<<<<<<< HEAD
-        "users_username_unique": {
-          "name": "users_username_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
-        },
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-=======
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": ["email"]
->>>>>>> 91c8cc5 (add support for communities)
         }
       },
       "policies": {},
@@ -770,8 +661,4 @@
     "schemas": {},
     "tables": {}
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 91c8cc5 (add support for communities)

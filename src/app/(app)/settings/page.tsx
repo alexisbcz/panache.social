@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardContent,
@@ -7,39 +5,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { ChangePasswordForm } from "./_components/change-password-form";
 import { DeleteAccountForm } from "./_components/delete-account-form";
 import { UpdateProfileForm } from "./_components/update-profile-form";
 
-export default function SettingsPage() {
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
-  const [isClient, setIsClient] = useState(false);
+export default async function SettingsPage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.push("/log-in");
-    }
-  }, [session, isPending, router]);
-
-  // Show nothing during SSR and initial client render
-  if (!isClient) {
-    return null;
-  }
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (!session) {
-    return null;
+  if (!session?.user) {
+    redirect("/log-in");
   }
 
   return (

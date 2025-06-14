@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { CommunitySelector } from "@/components/community-selector";
 import { submitPost } from "./actions";
 import { useState } from "react";
 
@@ -19,21 +20,28 @@ export default function Submit() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const formData = new FormData(e.target as HTMLFormElement);
+    const communityId = formData.get("communityId") as string;
+
     await submitPost({
       title,
       text: activeTab === "text" ? text : undefined,
       url: activeTab === "link" ? url : undefined,
+      communityId,
     });
 
     setIsSubmitting(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 w-full max-w-3xl px-6 py-4"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
       <h1 className="text-2xl font-bold">Submit a post</h1>
+
+      <div className="grid items-center gap-1.5">
+        <Label htmlFor="community">Community</Label>
+        <CommunitySelector name="communityId" required />
+      </div>
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="text">Text</TabsTrigger>

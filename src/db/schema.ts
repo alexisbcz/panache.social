@@ -79,6 +79,9 @@ export const posts = pgTable("posts", {
   authorId: text("author_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  communityId: text("community_id")
+    .notNull()
+    .references(() => communities.id, { onDelete: "cascade" }),
   likesCount: integer("likes_count")
     .$defaultFn(() => 0)
     .notNull(),
@@ -159,6 +162,22 @@ export const commentLikes = pgTable(
   ],
 );
 
+export const communities = pgTable("communities", {
+  id: cuid.primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  language: text("language").notNull(),
+  description: text("description"),
+  bannerImage: text("banner_image"),
+  iconImage: text("icon_image"),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
 export type Post = typeof posts.$inferSelect;
 export type PostWithAuthor = Post & { author: User };
 export type PostWithAuthorAndComments = PostWithAuthor & {
@@ -166,3 +185,4 @@ export type PostWithAuthorAndComments = PostWithAuthor & {
 };
 export type Comment = typeof comments.$inferSelect & { author: User };
 export type User = typeof users.$inferSelect;
+export type Community = typeof communities.$inferSelect;

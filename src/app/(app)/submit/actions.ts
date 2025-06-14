@@ -7,11 +7,19 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function submitPost(formData: {
+interface SubmitPostParams {
   title: string;
   text?: string;
   url?: string;
-}) {
+  communityId: string;
+}
+
+export async function submitPost({
+  title,
+  text,
+  url,
+  communityId,
+}: SubmitPostParams) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -21,7 +29,8 @@ export async function submitPost(formData: {
     throw new Error("You must be logged in to submit a post");
   }
 
-  const { title, text, url } = formData;
+  // TODO: Get the actual user ID from the session
+  const authorId = session.user.id;
 
   // Validate that either text or url is provided
   if (!text && !url) {
@@ -35,7 +44,8 @@ export async function submitPost(formData: {
       title,
       text: text || null,
       url: url || null,
-      authorId: session.user.id,
+      authorId,
+      communityId,
     })
     .returning();
 

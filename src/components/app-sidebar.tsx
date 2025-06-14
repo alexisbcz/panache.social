@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Home } from "lucide-react";
+import { Home, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -20,6 +20,11 @@ const navigation = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Communities",
+    url: "/c",
+    icon: Users,
   },
 ];
 
