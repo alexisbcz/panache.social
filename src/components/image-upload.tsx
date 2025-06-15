@@ -132,7 +132,9 @@ export function ImageUpload({
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <Upload className="w-6 h-6" />
-              <span className="text-xs">Click or drag to upload</span>
+              <span className="text-xs text-center">
+                Click or drag to upload
+              </span>
             </div>
           )}
         </div>

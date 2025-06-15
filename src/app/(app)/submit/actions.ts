@@ -7,17 +7,19 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-interface SubmitPostParams {
+type SubmitPostParams = {
   title: string;
   text?: string;
   url?: string;
+  image?: string;
   communityId: string;
-}
+};
 
 export async function submitPost({
   title,
   text,
   url,
+  image,
   communityId,
 }: SubmitPostParams) {
   const session = await auth.api.getSession({
@@ -44,6 +46,7 @@ export async function submitPost({
       title,
       text: text || null,
       url: url || null,
+      image: image || null,
       authorId,
       communityId,
     })

@@ -8,11 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { CommunitySelector } from "@/components/community-selector";
 import { submitPost } from "./actions";
 import { useState } from "react";
+import { ImageUpload } from "@/components/image-upload";
 
 export default function Submit() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
+  const [image, setImage] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState("text");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,10 +25,24 @@ export default function Submit() {
     const formData = new FormData(e.target as HTMLFormElement);
     const communityId = formData.get("communityId") as string;
 
+    // Convert image to base64 if present
+    let imageBase64: string | undefined;
+    if (image) {
+      const reader = new FileReader();
+      imageBase64 = await new Promise((resolve) => {
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          resolve(base64String);
+        };
+        reader.readAsDataURL(image);
+      });
+    }
+
     await submitPost({
       title,
       text: activeTab === "text" ? text : undefined,
       url: activeTab === "link" ? url : undefined,
+      image: activeTab === "image" ? imageBase64 : undefined,
       communityId,
     });
 
@@ -46,6 +62,7 @@ export default function Submit() {
         <TabsList>
           <TabsTrigger value="text">Text</TabsTrigger>
           <TabsTrigger value="link">Link</TabsTrigger>
+          <TabsTrigger value="image">Image</TabsTrigger>
         </TabsList>
 
         <div className="grid items-center gap-1.5 mt-4">
@@ -84,6 +101,18 @@ export default function Submit() {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ"
               required={activeTab === "link"}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="image" className="mt-4">
+          <div className="grid items-center gap-1.5">
+            <ImageUpload
+              name="image"
+              label="Image"
+              value={image}
+              onChange={setImage}
+              required={activeTab === "image"}
             />
           </div>
         </TabsContent>

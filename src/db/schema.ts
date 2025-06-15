@@ -64,10 +64,10 @@ export const verifications = pgTable("verifications", {
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at").$defaultFn(
-    () => /* @__PURE__ */ new Date(),
+    () => /* @__PURE__ */ new Date()
   ),
   updatedAt: timestamp("updated_at").$defaultFn(
-    () => /* @__PURE__ */ new Date(),
+    () => /* @__PURE__ */ new Date()
   ),
 });
 
@@ -76,6 +76,7 @@ export const posts = pgTable("posts", {
   title: text("title").notNull(),
   text: text("text"),
   url: text("url"),
+  image: text("image"),
   authorId: text("author_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
@@ -116,7 +117,7 @@ export const likes = pgTable(
   (table) => [
     // Ensure a user can only like a post once
     unique().on(table.userId, table.postId),
-  ],
+  ]
 );
 
 export const comments = pgTable("comments", {
@@ -159,7 +160,7 @@ export const commentLikes = pgTable(
   (table) => [
     // Ensure a user can only like a comment once
     unique().on(table.userId, table.commentId),
-  ],
+  ]
 );
 
 export const communities = pgTable("communities", {
