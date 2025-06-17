@@ -54,7 +54,7 @@ export default async function CommunityPage({
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4 max-w-5xl">
+    <div className="flex flex-col gap-4">
       {/* Community Header */}
       <div className="relative">
         {community.bannerImage && (

@@ -52,7 +52,7 @@ export default async function PostPage({ params }: PageProps) {
   const post = await getPost(id);
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

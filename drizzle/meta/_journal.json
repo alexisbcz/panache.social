@@ -8,6 +8,13 @@
       "when": 1749891918247,
       "tag": "0000_jazzy_harrier",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749981883697,
+      "tag": "0001_rainy_solo",
+      "breakpoints": true
     }
   ]
 }

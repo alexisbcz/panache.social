@@ -10,7 +10,7 @@ export default async function CommunitiesPage() {
   return (
     <div className="container mx-auto">
       <div className="flex gap-4 items-center mb-8">
-        <h1 className="text-3xl font-bold">Communities</h1>
+        <h1 className="text-2xl font-bold">Communities</h1>
         <Button asChild>
           <Link href="/c/new">Create Community</Link>
         </Button>

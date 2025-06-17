@@ -11,7 +11,7 @@ type SubmitPostParams = {
   title: string;
   text?: string;
   url?: string;
-  image?: string;
+  imageUrl?: string;
   communityId: string;
 };
 
@@ -19,7 +19,7 @@ export async function submitPost({
   title,
   text,
   url,
-  image,
+  imageUrl,
   communityId,
 }: SubmitPostParams) {
   const session = await auth.api.getSession({
@@ -35,8 +35,8 @@ export async function submitPost({
   const authorId = session.user.id;
 
   // Validate that either text or url is provided
-  if (!text && !url) {
-    throw new Error("Either text or URL must be provided");
+  if (!text && !url && !imageUrl) {
+    throw new Error("Either text, URL, or image must be provided");
   }
 
   // Create the post
@@ -46,7 +46,7 @@ export async function submitPost({
       title,
       text: text || null,
       url: url || null,
-      image: image || null,
+      image: imageUrl || null,
       authorId,
       communityId,
     })

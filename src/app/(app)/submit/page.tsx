@@ -9,14 +9,15 @@ import { CommunitySelector } from "@/components/community-selector";
 import { submitPost } from "./actions";
 import { useState } from "react";
 import { ImageUpload } from "@/components/image-upload";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Submit() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
-  const [image, setImage] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState("text");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,29 +25,35 @@ export default function Submit() {
 
     const formData = new FormData(e.target as HTMLFormElement);
     const communityId = formData.get("communityId") as string;
+    const imageUrl = formData.get("image") as string;
 
-    // Convert image to base64 if present
-    let imageBase64: string | undefined;
-    if (image) {
-      const reader = new FileReader();
-      imageBase64 = await new Promise((resolve) => {
-        reader.onloadend = () => {
-          const base64String = reader.result as string;
-          resolve(base64String);
-        };
-        reader.readAsDataURL(image);
+    if (!communityId) {
+      toast({
+        title: "Error",
+        description: "Please select a community",
+        variant: "destructive",
       });
+      setIsSubmitting(false);
+      return;
     }
 
-    await submitPost({
-      title,
-      text: activeTab === "text" ? text : undefined,
-      url: activeTab === "link" ? url : undefined,
-      image: activeTab === "image" ? imageBase64 : undefined,
-      communityId,
-    });
-
-    setIsSubmitting(false);
+    try {
+      await submitPost({
+        title,
+        text: activeTab === "text" ? text : undefined,
+        url: activeTab === "link" ? url : undefined,
+        imageUrl: activeTab === "image" ? imageUrl : undefined,
+        communityId,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to submit post",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -110,8 +117,6 @@ export default function Submit() {
             <ImageUpload
               name="image"
               label="Image"
-              value={image}
-              onChange={setImage}
               required={activeTab === "image"}
             />
           </div>

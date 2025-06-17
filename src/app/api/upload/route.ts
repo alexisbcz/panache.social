@@ -1,5 +1,6 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import { createId } from "@paralleldrive/cuid2";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -10,7 +11,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const blob = await put(file.name, file, {
+    // Get file extension
+    const extension = file.name.split('.').pop();
+    // Generate unique ID with original extension
+    const uniqueId = `${createId()}.${extension}`;
+
+    const blob = await put(uniqueId, file, {
       access: "public",
     });
 

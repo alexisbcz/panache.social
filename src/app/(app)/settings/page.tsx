@@ -22,10 +22,10 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="container max-w-2xl py-4 px-6">
-      <h1 className="text-2xl font-bold mb-8">Settings</h1>
+    <div className="container max-w-2xl">
+      <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Profile Settings</CardTitle>

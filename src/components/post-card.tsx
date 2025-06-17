@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Heart, MessageSquare, Link as LinkIcon, FileText } from "lucide-react";
+import { Heart, MessageSquare, Link as LinkIcon, FileText, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
@@ -23,12 +23,14 @@ import { useRouter } from "next/navigation";
 import { PostActionsDropdown } from "./post-actions-dropdown";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import Image from "next/image";
 
 interface Post {
   id: string;
   title: string;
   text?: string | null;
   url?: string | null;
+  image?: string | null;
   author: {
     username: string;
   };
@@ -165,6 +167,14 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
                 <FileText className="h-3 w-3" />
                 <span>Text</span>
               </Badge>
+            ) : post.image ? (
+              <Badge
+                variant="secondary"
+                className="gap-1 bg-emerald-50 text-emerald-600"
+              >
+                <ImageIcon className="h-3 w-3" />
+                <span>Image</span>
+              </Badge>
             ) : null}
           </div>
         </div>
@@ -189,6 +199,16 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
           >
             {post.url}
           </a>
+        )}
+        {post.image && (
+          <div className="relative w-full aspect-video mt-2">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
         )}
       </CardContent>
       <CardFooter className="flex gap-2">
