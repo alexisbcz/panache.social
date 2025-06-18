@@ -2,19 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import Link from "next/link";
-import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LogInPage() {
   const { toast } = useToast();
@@ -76,7 +76,7 @@ export default function LogInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
                 Email
@@ -101,6 +101,9 @@ export default function LogInPage() {
                 required
               />
             </div>
+            <Link href="/forgot-password" className="text-sm text-right text-primary hover:underline">
+              Forgot password?
+            </Link>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Log in"}
             </Button>
