@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { posts, users, likes } from "@/db/schema";
-import { desc, eq, sql, and } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
