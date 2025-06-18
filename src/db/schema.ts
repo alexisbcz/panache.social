@@ -80,7 +80,6 @@ export const posts = pgTable("posts", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   communityId: text("community_id")
-    .notNull()
     .references(() => communities.id, { onDelete: "cascade" }),
   likesCount: integer("likes_count")
     .$defaultFn(() => 0)

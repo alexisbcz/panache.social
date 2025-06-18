@@ -1,8 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { posts, users, communities } from "@/db/schema";
+import { posts, users, communities, likes } from "@/db/schema";
 import { desc, eq, sql } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export type CommunityPost = {
   id: string;
@@ -14,6 +16,7 @@ export type CommunityPost = {
   commentsCount: number;
   createdAt: Date;
   updatedAt: Date;
+  isLiked: boolean;
   author: {
     id: string;
     username: string;
@@ -30,6 +33,11 @@ export async function getCommunityPosts({
   sort?: "top" | "new";
   timeFrame?: "today" | "week" | "month" | "year" | "all";
 }) {
+  // Get current user session
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   // Get the community
   const community = await db
     .select()
@@ -93,8 +101,25 @@ export async function getCommunityPosts({
     .orderBy(orderBy)
     .limit(50);
 
+  // If user is logged in, check which posts they've liked
+  let likedPostIds: string[] = [];
+  if (session?.user) {
+    const userLikes = await db
+      .select({ postId: likes.postId })
+      .from(likes)
+      .where(eq(likes.userId, session.user.id));
+    
+    likedPostIds = userLikes.map(like => like.postId);
+  }
+
+  // Add isLiked property to each post
+  const postsWithLikeStatus = fetchedPosts.map(post => ({
+    ...post,
+    isLiked: likedPostIds.includes(post.id),
+  }));
+
   return {
     community: community[0],
-    posts: fetchedPosts,
+    posts: postsWithLikeStatus,
   };
 }

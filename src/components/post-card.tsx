@@ -11,13 +11,12 @@ import {
 import { Heart, MessageSquare, Link as LinkIcon, FileText } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { authClient } from "@/lib/auth-client";
 import {
   deletePost,
   toggleLike,
-  hasLikedPost,
 } from "@/app/(app)/p/[id]/actions";
 import { useRouter } from "next/navigation";
 import { PostActionsDropdown } from "./post-actions-dropdown";
@@ -35,6 +34,7 @@ interface Post {
   likesCount: number;
   commentsCount: number;
   createdAt: Date;
+  isLiked: boolean;
 }
 
 interface PostCardProps {
@@ -44,7 +44,7 @@ interface PostCardProps {
 
 export const PostCard = ({ post, truncate = false }: PostCardProps) => {
   const [likes, setLikes] = useState(post.likesCount);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.isLiked);
   const [isLiking, setIsLiking] = useState(false);
   const postUrl = `https://panache.social/p/${post.id}`;
   const session = authClient.useSession();
@@ -52,17 +52,6 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
   const router = useRouter();
 
   const { toast } = useToast();
-
-  // Initialize like state
-  useEffect(() => {
-    const checkLikeStatus = async () => {
-      if (session.data?.user) {
-        const liked = await hasLikedPost(post.id);
-        setIsLiked(liked);
-      }
-    };
-    checkLikeStatus();
-  }, [post.id, session.data?.user]);
 
   const handleLike = async () => {
     if (!session.data?.user) {

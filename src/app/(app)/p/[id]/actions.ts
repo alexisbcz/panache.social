@@ -27,6 +27,7 @@ export type PostWithComments = {
   commentsCount: number;
   createdAt: Date;
   updatedAt: Date;
+  isLiked: boolean;
   author: {
     id: string;
     username: string;
@@ -36,6 +37,11 @@ export type PostWithComments = {
 };
 
 export async function getPost(id: string): Promise<PostWithComments> {
+  // Get current user session
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   const post = await db
     .select({
       id: posts.id,
@@ -62,6 +68,18 @@ export async function getPost(id: string): Promise<PostWithComments> {
     redirect("/404");
   }
 
+  // Check if user has liked this post
+  let isLiked = false;
+  if (session?.user) {
+    const existingLike = await db
+      .select()
+      .from(likes)
+      .where(and(eq(likes.postId, id), eq(likes.userId, session.user.id)))
+      .limit(1);
+    
+    isLiked = existingLike.length > 0;
+  }
+
   const postComments = await db
     .select({
       id: comments.id,
@@ -84,6 +102,7 @@ export async function getPost(id: string): Promise<PostWithComments> {
 
   return {
     ...post[0],
+    isLiked,
     comments: postComments.map((comment) => ({
       ...comment,
       author: {

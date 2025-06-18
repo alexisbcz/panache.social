@@ -61,7 +61,7 @@ CREATE TABLE "posts" (
 	"text" text,
 	"url" text,
 	"author_id" text NOT NULL,
-	"community_id" text NOT NULL,
+	"community_id" text,
 	"likes_count" integer NOT NULL,
 	"comments_count" integer NOT NULL,
 	"created_at" timestamp NOT NULL,

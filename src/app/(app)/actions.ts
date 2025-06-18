@@ -1,8 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { posts, users } from "@/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { posts, users, likes } from "@/db/schema";
+import { desc, eq, sql, and } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export type Post = {
   id: string;
@@ -14,6 +16,7 @@ export type Post = {
   commentsCount: number;
   createdAt: Date;
   updatedAt: Date;
+  isLiked: boolean;
   author: {
     id: string;
     username: string;
@@ -28,6 +31,11 @@ export async function getPosts({
   sort?: "top" | "new";
   timeFrame?: "today" | "week" | "month" | "year" | "all";
 } = {}) {
+  // Get current user session
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   // Build the time filter
   let timeFilter = sql`1=1`; // Default to no time filter
   if (timeFrame !== "all") {
@@ -80,5 +88,22 @@ export async function getPosts({
     .orderBy(orderBy)
     .limit(50);
 
-  return fetchedPosts;
+  // If user is logged in, check which posts they've liked
+  let likedPostIds: string[] = [];
+  if (session?.user) {
+    const userLikes = await db
+      .select({ postId: likes.postId })
+      .from(likes)
+      .where(eq(likes.userId, session.user.id));
+    
+    likedPostIds = userLikes.map(like => like.postId);
+  }
+
+  // Add isLiked property to each post
+  const postsWithLikeStatus = fetchedPosts.map(post => ({
+    ...post,
+    isLiked: likedPostIds.includes(post.id),
+  }));
+
+  return postsWithLikeStatus;
 }
