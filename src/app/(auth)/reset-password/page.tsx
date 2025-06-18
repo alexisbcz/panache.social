@@ -9,6 +9,14 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { authClient } from "@/lib/auth-client";
@@ -27,7 +35,6 @@ const formSchema = z
         confirmPassword: z
             .string()
             .min(8, "Password must be at least 8 characters"),
-        token: z.string().nullable(),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
         message: "Passwords do not match",
@@ -46,18 +53,19 @@ export default function ResetPasswordPage() {
         defaultValues: {
             newPassword: "",
             confirmPassword: "",
-            token: null,
         },
     });
 
     async function onSubmit(values: FormSchema) {
         setIsLoading(true);
 
-
         try {
+            const token = new URLSearchParams(window.location.search).get(
+                "token"
+            );
             const { error } = await authClient.resetPassword({
                 newPassword: values.newPassword,
-                token: values.token as string,
+                token: token as string,
             });
 
             if (error) {
@@ -73,10 +81,10 @@ export default function ResetPasswordPage() {
 
             toast({
                 title: "Success",
-                description: "Logged in successfully!",
+                description: "Password reset successfully!",
             });
 
-            router.push("/");
+            router.push("/log-in");
             router.refresh();
         } catch (error) {
             console.error(error);
@@ -100,51 +108,60 @@ export default function ResetPasswordPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4"
-                    >
-                        <div className="space-y-2">
-                            <label
-                                htmlFor="email"
-                                className="text-sm font-medium"
-                            >
-                                New Password
-                            </label>
-                            <Input
-                                id="newPassword"
-                                name="newPassword"
-                                type="password"
-                                placeholder="••••••••••••••••"
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label
-                                htmlFor="password"
-                                className="text-sm font-medium"
-                            >
-                                Confirm Password
-                            </label>
-                            <Input
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="••••••••••••••••"
-                                required
-                            />
-                        </div>
-                        <Input id="token" name="token" type="hidden" />
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={isLoading}
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-4"
                         >
-                            {isLoading
-                                ? "Resetting password..."
-                                : "Reset password"}
-                        </Button>
-                    </form>
+                            <div className="space-y-2">
+                                <FormField
+                                    control={form.control}
+                                    name="newPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>New Password</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="••••••••••••••••"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <FormField
+                                    control={form.control}
+                                    name="confirmPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Confirm Password
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="••••••••••••••••"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                {isLoading
+                                    ? "Resetting password..."
+                                    : "Reset password"}
+                            </Button>
+                        </form>
+                    </Form>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <p className="text-sm text-muted-foreground">

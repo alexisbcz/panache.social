@@ -13,12 +13,10 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ForgotPasswordPage() {
     const { toast } = useToast();
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -47,11 +45,10 @@ export default function ForgotPasswordPage() {
 
             toast({
                 title: "Success",
-                description: "Reset email sent successfully!",
+                description:
+                    "Reset email sent successfully! Please check your email for the reset link.",
+                duration: 10000,
             });
-
-            router.push("/reset-password");
-            router.refresh();
         } catch (error) {
             console.error(error);
             toast({
@@ -90,7 +87,7 @@ export default function ForgotPasswordPage() {
                                 required
                             />
                         </div>
-
+                        {/* TODO: handle resend email */}
                         <Button
                             type="submit"
                             className="w-full"
