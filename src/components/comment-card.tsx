@@ -16,6 +16,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Comment } from "@/db/schema";
 import { toggleCommentLike, hasLikedComment } from "@/app/(app)/p/[id]/actions";
 import { cn } from "@/lib/utils";
+import { SafeFormattedContent } from "./ui/safe-formatted-content";
 
 interface CommentCardProps {
   comment: Comment & {
@@ -90,7 +91,9 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-foreground">{comment.content}</p>
+        <p className="text-sm text-foreground">
+          <SafeFormattedContent content={comment.content} />
+        </p>
       </CardContent>
       <CardFooter className="flex items-center gap-2 !pb-0">
         <Button
