@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Pirata_One } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,6 +79,13 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
+/**
+ * Root layout component that sets up global HTML structure, font styles, theme provider, tooltip context, and analytics for the application.
+ *
+ * Wraps all page content with font CSS variables, theme switching, tooltip support, and Vercel analytics tracking.
+ *
+ * @param children - The content to be rendered within the layout
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -94,8 +102,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Analytics />
+          <TooltipProvider>
+            {children}
+            <Analytics />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
