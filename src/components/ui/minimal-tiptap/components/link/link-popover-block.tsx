@@ -23,13 +23,41 @@ export const LinkPopoverBlock: React.FC<LinkPopoverBlockProps> = ({
   const handleCopy = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      navigator.clipboard
-        .writeText(url)
-        .then(() => {
+  const handleCopy = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+          .writeText(url)
+          .then(() => {
+            setCopyTitle("Copied!")
+            setTimeout(() => setCopyTitle("Copy"), 1000)
+          })
+          .catch((error) => {
+            console.error("Failed to copy to clipboard:", error)
+            setCopyTitle("Copy failed")
+            setTimeout(() => setCopyTitle("Copy"), 2000)
+          })
+      } else {
+        // Fallback for browsers without Clipboard API
+        try {
+          const textArea = document.createElement("textarea")
+          textArea.value = url
+          document.body.appendChild(textArea)
+          textArea.select()
+          document.execCommand("copy")
+          document.body.removeChild(textArea)
           setCopyTitle("Copied!")
           setTimeout(() => setCopyTitle("Copy"), 1000)
-        })
-        .catch(console.error)
+        } catch (error) {
+          console.error("Fallback copy failed:", error)
+          setCopyTitle("Copy failed")
+          setTimeout(() => setCopyTitle("Copy"), 2000)
+        }
+      }
+    },
+    [url]
+  )
     },
     [url]
   )
