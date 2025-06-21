@@ -219,7 +219,7 @@ export const filterFiles = <T extends FileInput>(
         }
       } else {
         if (!sanitizeUrl(actualFile, { allowBase64: options.allowBase64 })) {
-          errors.push({ file: actualFile, reason: "invalidBase64" })
+          errors.push({ file: actualFile, reason: "type" })
         } else {
           validFiles.push(file)
         }
