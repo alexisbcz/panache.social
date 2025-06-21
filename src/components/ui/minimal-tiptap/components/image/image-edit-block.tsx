@@ -48,8 +48,18 @@ export const ImageEditBlock: React.FC<ImageEditBlockProps> = ({
       e.stopPropagation()
 
       if (link) {
-        editor.commands.setImages([{ src: link }])
-        close()
+        try {
+          const url = new URL(link)
+          if (!['http:', 'https:'].includes(url.protocol)) {
+            throw new Error('Only HTTP and HTTPS URLs are allowed')
+          }
+
+          editor.commands.setImages([{ src: link }])
+          close()
+        } catch (error) {
+          console.error('Invalid URL:', error)
+          // Consider showing user-friendly error message
+        }
       }
     },
     [editor, link, close]
