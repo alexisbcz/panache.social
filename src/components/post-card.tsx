@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { PostActionsDropdown } from "./post-actions-dropdown";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { SafeFormattedContent } from "./ui/safe-formatted-content";
 
 interface Post {
   id: string;
@@ -166,7 +167,7 @@ export const PostCard = ({ post, truncate = false }: PostCardProps) => {
               truncate ? "line-clamp-3" : "whitespace-pre-wrap",
             )}
           >
-            {post.text}
+            <SafeFormattedContent content={post.text} />
           </p>
         )}
         {post.url && (

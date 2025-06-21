@@ -8,10 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { CommunitySelector } from "@/components/community-selector";
 import { submitPost } from "./actions";
 import { useState } from "react";
+import { Content } from "@tiptap/react"
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap"
 
 export default function Submit() {
   const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
+  const [text, setText] = useState<Content | undefined>(undefined);
   const [url, setUrl] = useState("");
   const [activeTab, setActiveTab] = useState("text");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +27,7 @@ export default function Submit() {
 
     await submitPost({
       title,
-      text: activeTab === "text" ? text : undefined,
+      text: activeTab === "text" ? text?.toString() : undefined,
       url: activeTab === "link" ? url : undefined,
       communityId,
     });
@@ -63,13 +65,22 @@ export default function Submit() {
         <TabsContent value="text" className="mt-4">
           <div className="grid items-center gap-1.5">
             <Label htmlFor="text">Content</Label>
-            <Textarea
+            {/* <Textarea
               id="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Can you believe it? I'll have a hard time processing this information."
               className="min-h-[100px]"
               required={activeTab === "text"}
+            /> */}
+            <MinimalTiptapEditor
+              value={text}
+              onChange={setText}
+              className="min-h-[200px]"
+              editorContentClassName="p-4"
+              output="html"
+              placeholder="Can you believe it? I'll have a hard time processing this information."
+              editable={true}
             />
           </div>
         </TabsContent>
