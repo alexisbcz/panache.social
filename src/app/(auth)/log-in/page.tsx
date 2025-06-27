@@ -21,10 +21,19 @@ export default function LogInPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const handleLoginWithGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to sign in with Google. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {

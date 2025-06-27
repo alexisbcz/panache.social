@@ -34,8 +34,20 @@ export const auth = betterAuth({
     },
     socialProviders: {
         google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID as string, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+            clientId: (() => {
+                const clientId = process.env.GOOGLE_CLIENT_ID;
+                if (!clientId || clientId.trim() === '') {
+                    throw new Error('GOOGLE_CLIENT_ID environment variable is required but not defined or empty');
+                }
+                return clientId;
+            })(),
+            clientSecret: (() => {
+                const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+                if (!clientSecret || clientSecret.trim() === '') {
+                    throw new Error('GOOGLE_CLIENT_SECRET environment variable is required but not defined or empty');
+                }
+                return clientSecret;
+            })(),
         }, 
     },
 });
