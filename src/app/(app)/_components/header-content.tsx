@@ -7,7 +7,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../../components/ui/tooltip";
-import { ToggleThemeButton } from "@/components/toggle-theme-button";
 
 export function HeaderContent({ children }: { children: React.ReactNode }) {
   return (
@@ -26,7 +25,6 @@ export function HeaderContent({ children }: { children: React.ReactNode }) {
         </Tooltip>
       </div>
       <div className="flex gap-2">
-        <ToggleThemeButton />
         {children}
       </div>
     </header>
