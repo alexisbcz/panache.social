@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
@@ -50,7 +51,12 @@ export function NavUser({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="lg" variant="ghost">
-          <CircleUserIcon className="size-5 stroke-muted-foreground" />
+          <Avatar className="size-5">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback>
+              <CircleUserIcon className="size-4 stroke-muted-foreground" />
+            </AvatarFallback>
+          </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">{user.name}</span>
           </div>
